@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Cursor</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            cursor: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png'), auto;
+        }
+
+        body.clicked {
+            cursor: url('https://www.freeiconspng.com/uploads/mac-cursor-hand-pointer-10.png'), auto;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const body = document.body;
+
+        body.addEventListener('mousedown', () => {
+            body.classList.add('clicked');
+        });
+
+        body.addEventListener('mouseup', () => {
+            body.classList.remove('clicked');
+        });
+
+        // Optional: For touch devices
+        body.addEventListener('touchstart', () => {
+            body.classList.add('clicked');
+        });
+
+        body.addEventListener('touchend', () => {
+            body.classList.remove('clicked');
+        });
+    </script>
+</body>
+</html>
