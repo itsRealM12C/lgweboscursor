@@ -3,38 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Cursor</title>
+    <title>Dynamic Custom Cursor</title>
     <style>
         body {
             margin: 0;
+            padding: 0;
             height: 100vh;
-            cursor: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png'), auto;
+            overflow: hidden;
+            cursor: none; /* Hide the default cursor */
         }
 
-        body.clicked {
-            cursor: url('https://www.freeiconspng.com/uploads/mac-cursor-hand-pointer-10.png'), auto;
+        .custom-cursor {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .custom-cursor.clicked {
+            background: url('https://www.freeiconspng.com/uploads/mac-cursor-hand-pointer-10.png') no-repeat center center;
+            background-size: contain;
         }
     </style>
 </head>
 <body>
+    <div class="custom-cursor" id="cursor"></div>
+
     <script>
-        const body = document.body;
+        const cursor = document.getElementById('cursor');
 
-        body.addEventListener('mousedown', () => {
-            body.classList.add('clicked');
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
         });
 
-        body.addEventListener('mouseup', () => {
-            body.classList.remove('clicked');
+        // Change cursor on mousedown
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('clicked');
         });
 
-        // Optional: For touch devices
-        body.addEventListener('touchstart', () => {
-            body.classList.add('clicked');
+        // Revert cursor on mouseup
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('clicked');
         });
 
-        body.addEventListener('touchend', () => {
-            body.classList.remove('clicked');
+        // Optional: Handle touch devices
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            cursor.style.left = `${touch.clientX}px`;
+            cursor.style.top = `${touch.clientY}px`;
+            cursor.classList.add('clicked');
+        });
+
+        document.addEventListener('touchend', () => {
+            cursor.classList.remove('clicked');
         });
     </script>
 </body>
