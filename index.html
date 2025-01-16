@@ -35,6 +35,11 @@
             background-size: contain;
         }
 
+        .custom-cursor.clicked {
+            background: url('https://cdn.pixabay.com/photo/2013/07/12/19/17/cursor-154478_1280.png') no-repeat center center;
+            background-size: contain;
+        }
+
         .scroll-container {
             height: 200vh; /* Allow for scrolling content */
             overflow: hidden; /* Prevent native scrolling */
@@ -80,6 +85,15 @@
             scrollContainer.style.transform = `translateY(-${scrollPosition}px)`;
 
             e.preventDefault(); // Prevent default scrolling behavior
+        });
+
+        // Handle cursor click animation
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('clicked');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('clicked');
         });
 
         function triggerCursorAnimation(animationClass, gifUrl) {
