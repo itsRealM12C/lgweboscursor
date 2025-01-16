@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LG webOS TV Cursor Old</title>
+    <title>Dynamic Custom Cursor with Scroll</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow: hidden;
+            height: 200vh; /* Extend height for scrolling */
+            overflow-y: scroll;
             cursor: none; /* Hide the default cursor */
         }
 
         .custom-cursor {
             position: absolute;
-            width: 128px;
-            height: 128px;
-            background: url('https://github.com/itsRealM12C/customcursor/blob/main/cursorTypeAszLstN.png?raw=true') no-repeat center center;
+            width: 32px;
+            height: 32px;
+            background: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png') no-repeat center center;
             background-size: contain;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 9999;
         }
 
-        .custom-cursor.clicked {
-            background: url('https://github.com/itsRealM12C/customcursor/blob/main/cursorTypeAszLstP3.png?raw=true') no-repeat center center;
+        .custom-cursor.scroll-up {
+            background: url('https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif') no-repeat center center;
+            background-size: contain;
+        }
+
+        .custom-cursor.scroll-down {
+            background: url('https://i.gifer.com/Ui00.gif') no-repeat center center;
             background-size: contain;
         }
     </style>
@@ -35,6 +40,8 @@
 
     <script>
         const cursor = document.getElementById('cursor');
+        let lastScrollTop = 0;
+        let isAnimating = false;
 
         // Update cursor position
         document.addEventListener('mousemove', (e) => {
@@ -42,29 +49,39 @@
             cursor.style.top = `${e.clientY}px`;
         });
 
-        // Change cursor on mousedown
-        document.addEventListener('mousedown', () => {
-            cursor.classList.add('clicked');
+        // Handle scroll events
+        document.addEventListener('scroll', () => {
+            if (isAnimating) return; // Prevent overlapping animations
+
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScrollTop > lastScrollTop) {
+                // Scrolling down
+                triggerCursorAnimation('scroll-down', 'https://i.gifer.com/Ui00.gif');
+            } else if (currentScrollTop < lastScrollTop) {
+                // Scrolling up
+                triggerCursorAnimation('scroll-up', 'https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif');
+            }
+
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For mobile or negative scrolling
         });
 
-        // Revert cursor on mouseup
-        document.addEventListener('mouseup', () => {
-            cursor.classList.remove('clicked');
-        });
+        function triggerCursorAnimation(animationClass, gifUrl) {
+            isAnimating = true;
+            cursor.classList.add(animationClass);
 
-        // Optional: Handle touch devices
-        document.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            cursor.style.left = `${touch.clientX}px`;
-            cursor.style.top = `${touch.clientY}px`;
-            cursor.classList.add('clicked');
-        });
+            // Create a temporary image to determine when the GIF ends
+            const tempImage = new Image();
+            tempImage.src = gifUrl;
 
-        document.addEventListener('touchend', () => {
-            cursor.classList.remove('clicked');
-        });
+            tempImage.onload = () => {
+                const gifDuration = tempImage.height / 100; // Estimate duration (assuming 100px/frame)
+                setTimeout(() => {
+                    cursor.classList.remove(animationClass);
+                    isAnimating = false;
+                }, gifDuration * 100); // Convert to ms
+            };
+        }
     </script>
-
-
 </body>
 </html>
