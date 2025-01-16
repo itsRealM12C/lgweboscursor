@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Custom Cursor with Scroll</title>
+    <title>LG webOS TV Cursor Old</title>
     <style>
         body {
             margin: 0;
@@ -18,7 +18,7 @@
             position: absolute;
             width: 32px;
             height: 32px;
-            background: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png') no-repeat center center;
+            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/cursorTypeAszLstN.png?raw=true') no-repeat center center;
             background-size: contain;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -26,17 +26,17 @@
         }
 
         .custom-cursor.scroll-up {
-            background: url('https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif') no-repeat center center;
+            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollUp.gif?raw=true') no-repeat center center;
             background-size: contain;
         }
 
         .custom-cursor.scroll-down {
-            background: url('https://i.gifer.com/Ui00.gif') no-repeat center center;
+            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollDown.gif?raw=true') no-repeat center center;
             background-size: contain;
         }
 
         .custom-cursor.clicked {
-            background: url('https://cdn.pixabay.com/photo/2013/07/12/19/17/cursor-154478_1280.png') no-repeat center center;
+            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/cursorTypeAszLstP3.png?raw=true') no-repeat center center;
             background-size: contain;
         }
 
@@ -73,11 +73,11 @@
 
             if (delta > 0) {
                 // Scrolling down
-                triggerCursorAnimation('scroll-down', 'https://i.gifer.com/Ui00.gif');
+                triggerCursorAnimation('scroll-down', 'https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollDown.gif?raw=true');
                 scrollPosition += 50; // Adjust scroll speed
             } else if (delta < 0) {
                 // Scrolling up
-                triggerCursorAnimation('scroll-up', 'https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif');
+                triggerCursorAnimation('scroll-up', 'https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollUp.gif?raw=true');
                 scrollPosition -= 50; // Adjust scroll speed
             }
 
