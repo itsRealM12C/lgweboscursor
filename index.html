@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LG webos TV Cursor Old</title>
+    <title>LG webOS TV Cursor Old</title>
     <style>
         body {
             margin: 0;
@@ -73,11 +73,11 @@
 
             if (delta > 0) {
                 // Scrolling down
-                triggerCursorAnimation('scroll-down');
+                triggerCursorAnimation('scroll-down', 1000); // Adjust duration based on GIF length
                 animateScroll(50); // Adjust scroll speed
             } else if (delta < 0) {
                 // Scrolling up
-                triggerCursorAnimation('scroll-up');
+                triggerCursorAnimation('scroll-up', 1000); // Adjust duration based on GIF length
                 animateScroll(-50); // Adjust scroll speed
             }
 
@@ -113,15 +113,15 @@
             cursor.classList.remove('clicked');
         });
 
-        function triggerCursorAnimation(animationClass) {
+        function triggerCursorAnimation(animationClass, duration) {
             if (animationTimeout) clearTimeout(animationTimeout);
 
             cursor.classList.add(animationClass);
 
-            // Set a fixed duration for GIF animations (e.g., 2 seconds)
+            // Set a fixed duration for GIF animations
             animationTimeout = setTimeout(() => {
                 cursor.classList.remove(animationClass);
-            }, 2000); // Adjust duration as needed
+            }, duration); // Use provided duration in ms
         }
     </script>
 </body>
