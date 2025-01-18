@@ -58,6 +58,7 @@
         let scrollPosition = 0;
         let isScrolling = false;
         let animationTimeout = null;
+        let lastAnimation = null; // To track current animation state
 
         // Update cursor position
         document.addEventListener('mousemove', (e) => {
@@ -67,16 +68,15 @@
 
         // Handle custom scroll logic
         document.addEventListener('wheel', (e) => {
-            if (isScrolling) return;
-
             const delta = e.deltaY;
+            const animationClass = delta > 0 ? 'scroll-down' : 'scroll-up';
+
+            if (lastAnimation === animationClass) return; // Prevent repeated animations
 
             if (delta > 0) {
-                // Scrolling down
                 triggerCursorAnimation('scroll-down', 1000); // Adjust duration based on GIF length
                 animateScroll(50); // Adjust scroll speed
             } else if (delta < 0) {
-                // Scrolling up
                 triggerCursorAnimation('scroll-up', 1000); // Adjust duration based on GIF length
                 animateScroll(-50); // Adjust scroll speed
             }
@@ -114,6 +114,9 @@
         });
 
         function triggerCursorAnimation(animationClass, duration) {
+            if (lastAnimation === animationClass) return; // Prevent re-triggering the same animation
+
+            lastAnimation = animationClass; // Set the current animation
             if (animationTimeout) clearTimeout(animationTimeout);
 
             cursor.classList.add(animationClass);
@@ -121,6 +124,7 @@
             // Set a fixed duration for GIF animations
             animationTimeout = setTimeout(() => {
                 cursor.classList.remove(animationClass);
+                lastAnimation = null; // Reset animation state after timeout
             }, duration); // Use provided duration in ms
         }
     </script>
