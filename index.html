@@ -59,6 +59,7 @@
         let isScrolling = false;
         let animationTimeout = null;
         let lastAnimation = null; // To track current animation state
+        let scrollTimeout = null; // To detect when scrolling stops
 
         // Update cursor position
         document.addEventListener('mousemove', (e) => {
@@ -81,6 +82,8 @@
                 animateScroll(-50); // Adjust scroll speed
             }
 
+            resetScrollTimeout(); // Reset the scroll stop detector
+
             e.preventDefault(); // Prevent default scrolling behavior
         });
 
@@ -89,7 +92,7 @@
             const targetPosition = Math.max(0, Math.min(scrollPosition + delta, scrollContainer.scrollHeight - window.innerHeight));
 
             function step() {
-                if (Math.abs(scrollPosition - targetPosition) < 1) {
+                if (Math.abs(scrollPosition - targetPosition) < 1 || !isScrolling) {
                     scrollPosition = targetPosition;
                     scrollContainer.style.transform = `translateY(-${scrollPosition}px)`;
                     isScrolling = false;
@@ -126,6 +129,14 @@
                 cursor.classList.remove(animationClass);
                 lastAnimation = null; // Reset animation state after timeout
             }, duration); // Use provided duration in ms
+        }
+
+        function resetScrollTimeout() {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+
+            scrollTimeout = setTimeout(() => {
+                isScrolling = false; // Stop scroll motion if no scroll event occurs
+            }, 100); // Adjust delay to detect scroll stop (in ms)
         }
     </script>
 </body>
