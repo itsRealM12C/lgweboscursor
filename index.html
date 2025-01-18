@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LG webOS TV Cursor Old</title>
+    <title>Dynamic Custom Cursor with Scroll</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             height: 200vh; /* Extend height for scrolling */
-            overflow-y: hidden; /* Disable native scrolling */
+            overflow: hidden; /* Disable native scrolling */
             cursor: none; /* Hide the default cursor */
             position: relative;
         }
 
         .custom-cursor {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/cursorTypeAszLstN.png?raw=true') no-repeat center center;
+            width: 32px;
+            height: 32px;
+            background: url('https://www.freeiconspng.com/uploads/mac-cursor-6.png') no-repeat center center;
             background-size: contain;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -26,18 +26,18 @@
         }
 
         .custom-cursor.scroll-up {
-            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollUp.gif?raw=true') no-repeat center center;
-            background-size: 50px;
+            background: url('https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif') no-repeat center center;
+            background-size: contain;
         }
 
         .custom-cursor.scroll-down {
-            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollDown.gif?raw=true') no-repeat center center;
-            background-size: 50px;
+            background: url('https://i.gifer.com/Ui00.gif') no-repeat center center;
+            background-size: contain;
         }
 
         .custom-cursor.clicked {
-            background: url('https://github.com/itsRealM12C/lgweboscursor/blob/main/cursorTypeAszLstP3.png?raw=true') no-repeat center center;
-            background-size: 50px;
+            background: url('https://cdn.pixabay.com/photo/2013/07/12/19/17/cursor-154478_1280.png') no-repeat center center;
+            background-size: contain;
         }
 
         .scroll-container {
@@ -58,6 +58,7 @@
         let lastScrollTop = 0;
         let isAnimating = false;
         let scrollPosition = 0;
+        let isScrolling = false;
 
         // Update cursor position
         document.addEventListener('mousemove', (e) => {
@@ -67,25 +68,42 @@
 
         // Handle custom scroll logic
         document.addEventListener('wheel', (e) => {
-            if (isAnimating) return;
+            if (isAnimating || isScrolling) return;
 
             const delta = e.deltaY;
 
             if (delta > 0) {
                 // Scrolling down
-                triggerCursorAnimation('scroll-down', 'https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollDown.gif?raw=true');
-                scrollPosition += 50; // Adjust scroll speed
+                triggerCursorAnimation('scroll-down', 'https://i.gifer.com/Ui00.gif');
+                animateScroll(50); // Adjust scroll speed
             } else if (delta < 0) {
                 // Scrolling up
-                triggerCursorAnimation('scroll-up', 'https://github.com/itsRealM12C/lgweboscursor/blob/main/scrollUp.gif?raw=true');
-                scrollPosition -= 50; // Adjust scroll speed
+                triggerCursorAnimation('scroll-up', 'https://media.tenor.com/eFPFHSN4rJ8AAAAM/example.gif');
+                animateScroll(-50); // Adjust scroll speed
             }
-
-            scrollPosition = Math.max(0, Math.min(scrollPosition, scrollContainer.scrollHeight - window.innerHeight));
-            scrollContainer.style.transform = `translateY(-${scrollPosition}px)`;
 
             e.preventDefault(); // Prevent default scrolling behavior
         });
+
+        function animateScroll(delta) {
+            isScrolling = true;
+            const targetPosition = Math.max(0, Math.min(scrollPosition + delta, scrollContainer.scrollHeight - window.innerHeight));
+
+            function step() {
+                if (Math.abs(scrollPosition - targetPosition) < 1) {
+                    scrollPosition = targetPosition;
+                    scrollContainer.style.transform = `translateY(-${scrollPosition}px)`;
+                    isScrolling = false;
+                    return;
+                }
+
+                scrollPosition += (targetPosition - scrollPosition) * 0.2; // Smooth scrolling factor
+                scrollContainer.style.transform = `translateY(-${scrollPosition}px)`;
+                requestAnimationFrame(step);
+            }
+
+            requestAnimationFrame(step);
+        }
 
         // Handle cursor click animation
         document.addEventListener('mousedown', () => {
